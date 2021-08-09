@@ -21,6 +21,14 @@ app.post('/', (req, res) => {
   res.send({ message: 'ok' })
 })
 
+app.get('/data', (req, res) => {
+  res.send({ message: 'hi' })
+})
+
+app.post('/data', (req, res) => {
+  res.send(req.body)
+})
+
 export const start = () => {
   app.listen(3000, () => {
     console.log('server is on 3000')
