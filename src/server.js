@@ -27,12 +27,31 @@ app.post('/', (req, res) => {
   res.send({ message: 'ok' })
 })
 
+// other CRUD routes
+// app.put()
+// app.delete()
+
 app.get('/data', (req, res) => {
   res.send({ message: 'hi' })
 })
 
 app.post('/data', (req, res) => {
   res.send(req.body)
+})
+
+// avoid: route matching on regex
+app.get(/^\/(me)/, (req, res) => {
+  res.send({ message: 'me' })
+})
+
+// avoid: route matching on glob
+app.get('/users/*', (req, res) => {
+  res.send({ message: 'user *' })
+})
+
+// param matching
+app.get('/users/:id', (req, res) => {
+  res.send(req.params.id)
 })
 
 export const start = () => {
