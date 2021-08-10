@@ -29,6 +29,29 @@ router.get('/me', (req, res) => {
   res.send({ me: 'hello' })
 })
 
+// CRUD routes with router
+// cat
+router
+  .route('/cat')
+  .get((req, res) => {
+    res.send({ cats: 'hello cats' })
+  })
+  .post((req, res) => {
+    res.send(req.body)
+  })
+
+router
+  .route('/cat/:id')
+  .get((req, res) => {
+    res.send({ cat: req.params.id })
+  })
+  .put((req, res) => {
+    res.send({ put_cat: req.params.id })
+  })
+  .delete((req, res) => {
+    res.send({ delete_cat: req.params.id })
+  })
+
 app.use('/api', router)
 
 app.get('/', (req, res) => {
