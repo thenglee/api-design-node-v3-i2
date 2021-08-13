@@ -24,9 +24,9 @@ export const signup = async (req, res) => {
   try {
     const user = await User.create(req.body)
     const token = newToken(user)
-    res.status(201).send({ token })
+    return res.status(201).send({ token })
   } catch (e) {
-    res.status(500).end()
+    return res.status(500).end()
   }
 }
 
@@ -35,15 +35,20 @@ export const signin = async (req, res) => {
     return res.status(400).send({ message: 'Need email and password' })
   }
 
+  const user = await User.findOne({ email: req.body.email })
+  if (!user) {
+    return res.status(401).send({ message: 'no user found' })
+  }
+
   try {
-    const user = await User.findOne(req.body)
-    if (!user) {
-      return res.status(401).send({ message: 'no user found' })
+    const match = await user.checkPassword(req.body.password)
+    if (!match) {
+      return res.status(401).send({ message: 'password does not match' })
     }
     const token = newToken(user)
-    res.status(201).send({ token })
+    return res.status(201).send({ token })
   } catch (e) {
-    res.status(500).end()
+    return res.status(500).end()
   }
 }
 
