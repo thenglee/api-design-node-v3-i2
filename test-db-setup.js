@@ -24,7 +24,7 @@ const remove = collection =>
     })
   })
 
-beforeEach(async done => {
+beforeEach(async () => {
   const db = cuid()
   function clearDB() {
     return Promise.all(_.map(mongoose.connection.collections, c => remove(c)))
@@ -32,13 +32,10 @@ beforeEach(async done => {
 
   if (mongoose.connection.readyState === 0) {
     try {
-      await mongoose.connect(
-        url + db,
-        {
-          useNewUrlParser: true,
-          autoIndex: true
-        }
-      )
+      await mongoose.connect(url + db, {
+        useNewUrlParser: true,
+        autoIndex: true
+      })
       await clearDB()
       await Promise.all(Object.keys(models).map(name => models[name].init()))
     } catch (e) {
@@ -49,13 +46,9 @@ beforeEach(async done => {
   } else {
     await clearDB()
   }
-  done()
 })
-afterEach(async done => {
+afterEach(async () => {
   await mongoose.connection.db.dropDatabase()
   await mongoose.disconnect()
-  return done()
 })
-afterAll(done => {
-  return done()
-})
+afterAll(() => {})

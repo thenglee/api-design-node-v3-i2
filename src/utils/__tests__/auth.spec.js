@@ -53,9 +53,9 @@ describe('Authentication:', () => {
         },
         async send(result) {
           let user = await verifyToken(result.token)
-          user = await User.findById(user.id)
-            .lean()
-            .exec()
+          const user_id = mongoose.Types.ObjectId(user.id)
+          user = await User.findById(user_id).lean().exec()
+          console.log('user', user)
           expect(user.email).toBe('hello@hello.com')
         }
       }
@@ -137,9 +137,7 @@ describe('Authentication:', () => {
         },
         async send(result) {
           let user = await verifyToken(result.token)
-          user = await User.findById(user.id)
-            .lean()
-            .exec()
+          user = await User.findById(user.id).lean().exec()
           expect(user._id.toString()).toBe(savedUser._id.toString())
         }
       }
